@@ -99,30 +99,77 @@ const getOrdenes = async (req, res) => {
 }
 
 const createOrden = async (req, res) => {
-    const { aprovado , user_id, orderTotal } = req.body;
-    const response = await pool.query('insert into orden (aprovado , user_id, orderTotal) values ($1, $2, $3)',
-         [aprovado , user_id, orderTotal])
+    const { aprovado , user_id, ordertotal } = req.body;
+    const response = await pool.query('insert into orden (aprovado , user_id, ordertotal) values ($1, $2, $3)',
+         [aprovado , user_id, ordertotal])
     console.log(response);
     res.send('orden created');
 }
-//no funca bien
+
 const updateOrden = async (req, res) => {
-    const idproducto = req.params.idproducto;
-    const {aprovado, orderTotal} = req.body;
+    const order_id = req.params.order_id;
+    const {aprovado, ordertotal} = req.body;
     const response = await pool.query('UPDATE orden SET aprovado = $1, ordertotal = $2 WHERE order_id = $3',
     [
         aprovado,
-        orderTotal,
-        idproducto
+        ordertotal,
+        order_id
     ]);
     console.log(response);
     res.json('producto actualizado');
 }
 
 const getOrdenByID = async (req, res) => {
-    const id = req.params.idproducto;
-    const response = await pool.query('SELECT * FROM orden Where order_id = $1', [id]);
+    const id = req.params.order_id;
+    const response = await pool.query('SELECT * FROM orden WHERE order_id = $1', [id]);
     res.json(response.rows);
+}
+
+//DETALLE_ORDEN
+const getDetalle_Orden = async (req, res) => {
+    const response = await pool.query('SELECT * FROM detalle_orden');
+    res.json(response.rows);
+}
+
+const createDetalle_Orden = async ( req, res ) => {
+    const { idproducto , order_id, cantidad } = req.body;
+    const response = await pool.query('insert into detalle_orden (idproducto , order_id, cantidad) values ($1, $2, $3)',
+         [idproducto , order_id, cantidad])
+    console.log(response);
+    res.send('orden created');
+}
+
+const getDetalleByID = async (req, res) => {
+    const id = req.params.orderdetail_id;
+    const response = await pool.query('SELECT * FROM detalle_orden WHERE orderdetail_id = $1', [id]);
+    res.json(response.rows);
+}
+
+const getDetalleByOrderID = async (req, res) => {
+    const id = req.params.order_id;
+    const response = await pool.query('SELECT * FROM detalle_orden WHERE order_id = $1', [id]);
+    res.json(response.rows);
+}
+
+//no funca
+const updateDetalle = async ( req, res ) => {
+    const orderdetail_id = req.params.orderdetail_id;
+    console.log(orderdetail_id);
+    const cantidad = req.body;
+    const response = await pool.query('UPDATE detalle_orden SET cantidad = $1 WHERE orderdetail_id = $2',
+    [
+        cantidad,
+        orderdetail_id
+    ]);
+    console.log(response);
+    res.json('detalle actualizado');
+}
+
+const deleteDetalle = async (req, res) => {
+    const id = req.params.orderdetail_id;
+    const response = await pool.query('DELETE FROM detalle_orden WHERE orderdetail_id = $1', [id]);
+    console.log(response);
+    res.json('Detail ${id} deleted successfully');
 }
 
 module.exports = {
@@ -140,5 +187,11 @@ module.exports = {
     getOrdenes,
     createOrden,
     updateOrden,
-    getOrdenByID
+    getOrdenByID,
+    getDetalle_Orden,
+    createDetalle_Orden,
+    getDetalleByID,
+    getDetalleByOrderID,
+    updateDetalle,
+    deleteDetalle
 }
