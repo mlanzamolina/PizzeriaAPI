@@ -1,7 +1,7 @@
 const { Router } =  require('express');
 const router = Router();
 
-const { getUsers, createUser, getUserByUsername, getUserByID } = require('../controllers/index.controller');
+const { getUsers, createUser, getUserByUsername, getUserByID,validateUser } = require('../controllers/index.controller');
 const { getProducto, createProducto, getProductoByID, deleteProducto, updateProducto } = require('../controllers/index.controller');
 const { getReviews, createReview, getReviewsByProduct } = require('../controllers/index.controller');
 const { getOrdenes, createOrden, updateOrden, getOrdenByID } = require('../controllers/index.controller');
@@ -11,6 +11,7 @@ const { getDetalle_Orden, createDetalle_Orden, getDetalleByOrderID, updateDetall
 router.get('/usuarios', getUsers);
 //router.get('/usuarios/:user_id', getUserByID);
 router.get('/usuarios/:username', getUserByUsername)
+router.get('/validate/:username', validateUser)
 router.post('/usuarios', createUser);
 
 //PRODUCTOS

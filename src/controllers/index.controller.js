@@ -176,7 +176,6 @@ const getDetalleByOrderID = async (req, res) => {
   res.json(response.rows);
 };
 
-
 const updateDetalle = async (req, res) => {
   const orderdetail_id = req.params.orderdetail_id;
   const { cantidad } = req.body;
@@ -190,10 +189,21 @@ const updateDetalle = async (req, res) => {
 
 const deleteDetalle = async (req, res) => {
   const orderdetail_id = req.params.orderdetail_id;
-  const response = await pool.query('DELETE FROM detalle_orden WHERE orderdetail_id = $1', [orderdetail_id]
+  const response = await pool.query(
+    "DELETE FROM detalle_orden WHERE orderdetail_id = $1",
+    [orderdetail_id]
   );
   console.log(response);
   res.json("Detail ${id} deleted successfully");
+};
+const validateUser = async (req, res) => {
+  const username = req.params.username;
+  const response = await pool.query(
+    "SELECT count(1) FROM usuario Where username = $1",
+    [username]
+  );
+  console.log(response);
+  res.json(response.rows[0].count !== "0" ? { exist: true } : { exist: false });
 };
 
 module.exports = {
@@ -218,5 +228,6 @@ module.exports = {
   getDetalleByOrderID,
   updateDetalle,
   deleteDetalle,
-  getUserByUsername
+  getUserByUsername,
+  validateUser,
 };
