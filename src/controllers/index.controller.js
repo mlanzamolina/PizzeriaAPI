@@ -22,6 +22,14 @@ const getUserByID = async (req, res) => {
   );
   res.json(response.rows);
 };
+//todos los nombres que tengan active en el nombre
+const getUserActive = async (req, res) => {
+  const id = req.params.nombre;
+  const response = await pool.query("SELECT * FROM usuario Where nombre = $1", [
+    id,
+  ]);
+  res.json(response.rows);
+};
 
 const getUserByUsername = async (req, res) => {
   const username = req.params.username;
@@ -41,6 +49,17 @@ const createUser = async (req, res) => {
   );
   console.log(resonse);
   res.send("user created");
+};
+//update user prueba
+const updateUser = async (req, res) => {
+  const username = req.params.username;
+  const { nombre } = req.body;
+  const response = await pool.query(
+    "UPDATE usuario SET nombre = $1 WHERE username = $2",
+    [nombre, username]
+  );
+  console.log(response);
+  res.json("usuario actualizado");
 };
 
 //PRODUCTOS
@@ -230,4 +249,6 @@ module.exports = {
   deleteDetalle,
   getUserByUsername,
   validateUser,
+  updateUser,
+  getUserActive,
 };
