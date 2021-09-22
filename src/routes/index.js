@@ -40,6 +40,7 @@ const {
   updateCarritocantprecio,
   getcarritoByID,
   deleteCarritoByID,
+  deleteCarritos,
   createCarrito} = require("../controllers/index.controller");
 
 //USUARIOS
@@ -85,6 +86,7 @@ router.get('/carritos', getCarritos);
 router.put('/carritos/:idcarrito', updateCarritocantprecio);
 router.get('/carritos/:idcarrito', getcarritoByID);
 router.delete('/carritos/:idcarrito', deleteCarritoByID);
+router.delete('/carritos', deleteCarritos);
 
 
 

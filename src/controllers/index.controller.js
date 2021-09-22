@@ -225,14 +225,13 @@ const validateUser = async (req, res) => {
   res.json(response.rows[0].count !== "0" ? { exist: true } : { exist: false });
 };
 
-
 //carrito
-const getCarritos = async(req, res) => {
+const getCarritos = async (req, res) => {
   const response = await pool.query("SELECT * FROM carrrito");
   res.json(response.rows);
-}
+};
 
-const updateCarritocantprecio = async(req, res) => {
+const updateCarritocantprecio = async (req, res) => {
   const idcarrito = req.params.idcarrito;
   const { precio, cantidad } = req.body;
   const response = await pool.query(
@@ -241,30 +240,40 @@ const updateCarritocantprecio = async(req, res) => {
   );
   console.log(response);
   res.json("producto actualizado");
-}
+};
 
-const getcarritoByID = async(req, res) => {
+const getcarritoByID = async (req, res) => {
   const id = req.params.idcarrito;
-  const response = await pool.query('select * from carrrito where idcarrito = $1',[id]);
-  res.json(response.rows)
-}
-
-const deleteCarritoByID = async(req, res) => {
   const response = await pool.query(
-    "DELETE FROM carrrito WHERE idcarrito > 0");
-    res.json("carritos deleted successfully");
-}
+    "select * from carrrito where idcarrito = $1",
+    [id]
+  );
+  res.json(response.rows);
+};
 
-const createCarrito = async(req, res) => {
-  const { nombre_producto, precio, cantidad, imagen, idproducto, user_id } = req.body;
+const deleteCarritoByID = async (req, res) => {
+  const  id  = req.params.idcarrito;
+  const response = await pool.query(
+    "DELETE FROM carrrito WHERE idcarrito = $1",
+    [id]
+  );
+  res.json("carrito  deleted successfully: ");
+};
+const deleteCarritos = async (req, res) => {
+  const response = await pool.query("DELETE FROM carrrito WHERE idcarrito > 0");
+  res.json("carritos deleted successfully");
+};
+
+const createCarrito = async (req, res) => {
+  const { nombre_producto, precio, cantidad, imagen, idproducto, user_id } =
+    req.body;
   const response = await pool.query(
     "insert into carrrito (nombre_producto, precio, cantidad, imagen, idproducto, user_id) values ($1, $2, $3, $4, $5, $6)",
     [nombre_producto, precio, cantidad, imagen, idproducto, user_id]
   );
   console.log(response);
   res.send("orden created");
-}
-
+};
 
 module.exports = {
   getUsers,
@@ -296,5 +305,6 @@ module.exports = {
   updateCarritocantprecio,
   getcarritoByID,
   deleteCarritoByID,
-  createCarrito
+  createCarrito,
+  deleteCarritos,
 };
