@@ -35,6 +35,12 @@ const {
   updateDetalle,
   deleteDetalle,
 } = require("../controllers/index.controller");
+const {
+  getCarritos,
+  updateCarritocantprecio,
+  getcarritoByID,
+  deleteCarritoByID,
+  createCarrito} = require("../controllers/index.controller");
 
 //USUARIOS
 router.get("/usuarios", getUsers);
@@ -71,5 +77,15 @@ router.get("/detalles/:order_id", getDetalleByOrderID);
 router.post("/detalles", createDetalle_Orden);
 router.put("/detalles/:orderdetail_id", updateDetalle);
 router.delete("/detalles/:orderdetail_id", deleteDetalle);
+
+
+//carritos
+router.post('/carrito', createCarrito);
+router.get('/carritos', getCarritos);
+router.put('/carritos/:idcarrito', updateCarritocantprecio);
+router.get('/carritos/:idcarrito', getcarritoByID);
+router.delete('/carritos/:idcarrito', deleteCarritoByID);
+
+
 
 module.exports = router;
