@@ -80,7 +80,7 @@ router.delete("/detalles/:orderdetail_id", deleteDetalle);
 
 
 //carritos
-router.post('/carrito', createCarrito);
+router.post('/carritos', createCarrito);
 router.get('/carritos', getCarritos);
 router.put('/carritos/:idcarrito', updateCarritocantprecio);
 router.get('/carritos/:idcarrito', getcarritoByID);
